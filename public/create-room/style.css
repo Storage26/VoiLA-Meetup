@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: rgb(32, 164, 241);
+    color: white;
+    font-family: sans-serif;
+}
+
+#main-container {
+    display: block;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+#main-container .heading {
+    font-size: 5vh;
+    font-weight: bold;
+}
+
+#user-name {
+    margin-top: 5px;
+    width: 25vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    outline: none;
+    border: none;
+    border-radius: 0.25em;
+    user-select: auto;
+}
+
+#user-name::placeholder {
+    color: rgb(185, 185, 185);
+}
+
+#create-button {
+    width: 28vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    outline: none;
+    border: none;
+    border-radius: 0.25em;
+    user-select: auto;
+    background-color: rgb(57, 226, 57);
+    margin-top: 10px;
+    color: white;
+    font-size: 2.1vh;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#create-button:hover {
+    background-color: rgb(47, 185, 47);
+}
+
+#create-button:active {
+    background-color: rgb(39, 150, 39);
+}
+
+#loading-screen {
+    visibility: hidden;
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgb(32, 164, 241);
+}
+
+#loading-screen i {
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    color: white;
+}

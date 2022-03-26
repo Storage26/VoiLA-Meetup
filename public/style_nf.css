@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: rgb(32, 164, 241);
+}
+
+center {
+    color: white;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+a {
+    user-select: auto;
+}

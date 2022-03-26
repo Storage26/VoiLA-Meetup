@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/public/active-room/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <span id="room-id">$$$ROOM-ID$$$</span>
+    <span id="user-name">$$$USER-NAME$$$</span>
+    
+    <!-- Loading Screen -->
+    <div id="connecting-screen">
+        <span>Connecting...</span>
+    </div>
+
+    <div id="main-container">
+        <div class="left">
+            <div class="top">
+                <div>
+                    <center>
+                        MeetUp Code<br>
+                        <span class="id" id="room-id-display"></span><br>
+                        <button id="invite-people-button" title="Invite people in this MeetUp">Send Invitation</button>
+                    </center>
+                </div>
+            </div>
+            <div class="middle">
+                <center>
+                    <!-- Members List -->
+                </center>
+            </div>
+            <div class="bottom">
+                <div>
+                    <button id="end-room-button" title="End MeetUp">
+                        <i class="fa fa-power-off"></i>
+                        <span>End MeetUp</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="middle"></div>
+            <div class="bottom">
+                <input type="text" placeholder="Type something..." id="message-input">
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/public/active-room/script.js"></script>
+</html>

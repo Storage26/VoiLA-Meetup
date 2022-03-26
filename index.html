@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiLA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/public/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <h1>
+            <i class="fa fa-spinner fa-spin fa-pulse"></i>
+        </h1>
+    </div>
+
+    <div id="main-container">
+        <span class="site-name">VoiLA</span>
+        <span class="site-description">Instant Meetup</span>
+
+        <br><br>
+
+        <div id="first-container">
+            <input type="text" id="name-input" placeholder="Username">
+        </div>
+        <div id="second-container">
+            <input type="text" id="room-code-input" placeholder="MeetUp Code">
+            <button id="join-button">Join</button>
+        </div>
+
+        <br><br>
+        <center>
+            <div class="hr-container">
+                <span class="hr"></span>
+                <span class="text">or</span>
+                <span class="hr"></span>
+            </div>
+
+            <button id="create-room-button">Create new MeetUp</button>
+        </center>
+    </div>
+    
+</body>
+<script src="/public/script.js"></script>
+</html>

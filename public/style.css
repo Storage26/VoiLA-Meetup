@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+body {
+    background-color: rgb(32, 164, 241);
+}
+
+#main-container {
+    position: fixed;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+#main-container .site-name {
+    font-weight: bold;
+    font-size: 10vh;
+}
+
+#main-container .site-description {
+    font-weight: normal;
+    font-size: 3vh;
+}
+
+#first-container {
+    width: 100%;
+    display: flex;
+}
+
+#name-input {
+    flex: 1;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    outline: none;
+    border: none;
+    border-radius: 0.25em;
+    user-select: auto;
+}
+
+#name-input::placeholder {
+    color: rgb(185, 185, 185);
+}
+
+#room-code-input {
+    flex: 1;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    outline: none;
+    border: none;
+    border-radius: 0.25em;
+    user-select: auto;
+}
+
+#room-code-input::placeholder {
+    color: rgb(185, 185, 185);
+}
+
+#second-container {
+    width: 100%;
+    display: flex;
+    margin-top: 1vh;
+}
+
+#join-button {
+    background-color: rgb(57, 226, 57);
+    color: white;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    border-radius: 0.25em;
+    margin-left: 0.5vw;
+    padding-left: 1.25vw;
+    padding-right: 1.25vw;
+    cursor: pointer;
+}
+
+#join-button:hover {
+    background-color: rgb(47, 185, 47);
+}
+
+#join-button:active {
+    background-color: rgb(39, 150, 39);
+}
+
+#loading-screen {
+    visibility: hidden;
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgb(32, 164, 241);
+}
+
+#loading-screen i {
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    color: white;
+}
+
+.hr-container {
+    height: 20px;
+    line-height: 5px;
+    width: 100%;
+    display: flex;
+}
+
+.hr-container .text {
+    margin-left: 1vw;
+    margin-right: 1vw;
+    font-size: 20px;
+}
+
+.hr {
+    flex: 1;
+    background-color: white;
+    height: 2px;
+}
+
+#create-room-button {
+    background-color: rgb(57, 226, 57);
+    color: white;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    width: 100%;
+    border-radius: 0.25em;
+    margin-left: 0.5vw;
+    padding-left: 1.25vw;
+    padding-right: 1.25vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#create-room-button:hover {
+    background-color: rgb(47, 185, 47);
+}
+
+#create-room-button:active {
+    background-color: rgb(39, 150, 39);
+}
