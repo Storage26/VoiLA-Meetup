@@ -13,6 +13,23 @@
 <body>
     <span id="room-id">$$$ROOM-ID$$$</span>
     <span id="user-name">$$$USER-NAME$$$</span>
+
+    <!-- Audio Preloads -->
+    <audio preload="auto" id="message-sent-audio">
+        <source src="http://voila-meetup.herokuapp.com/public/msg_s.mp3" type="audio/mpeg">
+    </audio>
+    <audio preload="auto" id="message-received-audio">
+        <source src="http://voila-meetup.herokuapp.com/public/msg_r.mp3" type="audio/mpeg">
+    </audio>
+    <audio preload="auto" id="message-user-joined-audio">
+        <source src="http://voila-meetup.herokuapp.com/public/msg_uj.mp3" type="audio/mpeg">
+    </audio>
+    <audio preload="auto" id="message-user-left-audio">
+        <source src="http://voila-meetup.herokuapp.com/public/msg_ul.mp3" type="audio/mpeg">
+    </audio>
+    <audio preload="auto" id="message-room-ended-audio">
+        <source src="http://voila-meetup.herokuapp.com/public/msg_re.mp3" type="audio/mpeg">
+    </audio>
     
     <!-- Loading Screen -->
     <div id="connecting-screen">

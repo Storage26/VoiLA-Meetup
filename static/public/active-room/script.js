@@ -5,6 +5,11 @@ const room_id_display = document.querySelector("#room-id-display")
 const messages_container = document.querySelector("#messages-container")
 const message_box_container = document.querySelector("#message-box-container")
 const end_room_button = document.querySelector("#end-room-button")
+const message_sent_audio = document.querySelector("#message-sent-audio")
+const message_received_audio = document.querySelector("#message-received-audio")
+const message_user_joined_audio = document.querySelector("#message-user-joined-audio")
+const message_user_left_audio = document.querySelector("#message-user-left-audio")
+const message_room_ended_audio = document.querySelector("#message-room-ended-audio")
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
 const server = location.protocol + '//' + location.host + "/"
@@ -256,32 +261,32 @@ function AddMessage(id, object)
     if (id == 0)
     {
         // Message sent
-        let audio = new Audio(server + "public/msg_s.mp3")
-        audio.play()
+        message_sent_audio.currentTime = 0
+        message_sent_audio.play()
     }
     else if (id == 1)
     {
         // Message received
-        let audio = new Audio(server + "public/msg_r.mp3")
-        audio.play()
+        message_received_audio.currentTime = 0
+        message_received_audio.play()
     }
     else if (id == 2)
     {
         // User joined
-        let audio = new Audio(server + "public/msg_uj.mp3")
-        audio.play()
+        message_user_joined_audio.currentTime = 0
+        message_user_joined_audio.play()
     }
     else if (id == 3)
     {
         // User left
-        let audio = new Audio(server + "public/msg_ul.mp3")
-        audio.play()
+        message_user_left_audio.currentTime = 0
+        message_user_left_audio.play()
     }
     else if (id == 4)
     {
         // Room ended
-        let audio = new Audio(server + "public/msg_re.mp3")
-        audio.play()
+        message_room_ended_audio.currentTime = 0
+        message_room_ended_audio.play()
     }
 
     // Scroll to bottom
