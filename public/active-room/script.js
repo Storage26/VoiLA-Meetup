@@ -7,8 +7,7 @@ const message_box_container = document.querySelector("#message-box-container")
 const end_room_button = document.querySelector("#end-room-button")
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
-const server_temp = window.location
-const server = server_temp.substring(0, server_temp.length - 1)
+const server = "http://voila-meetup.herokuapp.com"
 var socket = null
 
 // Verify username
