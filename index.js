@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8000
 
 {
     admin.initializeApp({
-        credential: admin.credential.cert("./public/credential.json"),
+        credential: admin.credential.cert("./static/credential.json"),
         databaseURL: "https://voila-26-default-rtdb.asia-southeast1.firebasedatabase.app/"
     })
 }
@@ -23,7 +23,7 @@ app.use(cors({
     credentials: true,
     optionsSuccessStatus: 200
 }))
-app.use("/public", express.static("public"))
+app.use("/public", express.static("static/public"))
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html")
@@ -45,11 +45,11 @@ app.get("/join/:code", (req, res) => {
             {
                 if (given(user_name))
                 {
-                    res.send(fs.readFileSync("./public/active-room/index.html").toString().trim().replace("$$$ROOM-ID$$$", code).replace("$$$USER-NAME$$$", user_name))
+                    res.send(fs.readFileSync("./static/public/active-room/index.html").toString().trim().replace("$$$ROOM-ID$$$", code).replace("$$$USER-NAME$$$", user_name))
                 }
                 else
                 {
-                    res.send(fs.readFileSync("./public/active-room/index.html").toString().trim().replace("$$$ROOM-ID$$$", code).replace("$$$USER-NAME$$$", ""))
+                    res.send(fs.readFileSync("./static/public/active-room/index.html").toString().trim().replace("$$$ROOM-ID$$$", code).replace("$$$USER-NAME$$$", ""))
                 }
             }
             else

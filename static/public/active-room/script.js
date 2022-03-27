@@ -7,7 +7,7 @@ const message_box_container = document.querySelector("#message-box-container")
 const end_room_button = document.querySelector("#end-room-button")
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
-const server = "http://voila-meetup.herokuapp.com"
+const server = window.location
 var socket = null
 
 // Verify username
@@ -66,7 +66,7 @@ function ConnectToServer()
 {
     ToggleConnectingScreen(true)
 
-    socket = io(server + "/active_room", {
+    socket = io(server + "active_room", {
         reconnection: false,
         query: {
             user_name: user_name,
@@ -212,9 +212,9 @@ function AddMessage(id, object)
         toAdd = `
         <div class="info-message">
             <center>
-                <hr>
+                <hr color="lightgray">
                 <span>` + other_user_name + " joined" + `</span>
-                <hr>
+                <hr color="lightgray">
             </center>
         </div>
         `
@@ -227,15 +227,16 @@ function AddMessage(id, object)
         toAdd = `
         <div class="info-message">
             <center>
-                <hr>
+                <hr color="lightgray">
                 <span>` + other_user_name + " left" + `</span>
-                <hr>
+                <hr color="lightgray">
             </center>
         </div>
         `
     }
     else if (id == 4)
     {
+        // Room ended
         let other_user_name = object.other_user_name
 
         toAdd = `
@@ -250,6 +251,38 @@ function AddMessage(id, object)
     }
 
     messages_container.innerHTML += toAdd
+
+    // Make sound
+    if (id == 0)
+    {
+        // Message sent
+        let audio = new Audio(server + "public/msg_s.mp3")
+        audio.play()
+    }
+    else if (id == 1)
+    {
+        // Message received
+        let audio = new Audio(server + "public/msg_r.mp3")
+        audio.play()
+    }
+    else if (id == 2)
+    {
+        // User joined
+        let audio = new Audio(server + "public/msg_uj.mp3")
+        audio.play()
+    }
+    else if (id == 3)
+    {
+        // User left
+        let audio = new Audio(server + "public/msg_ul.mp3")
+        audio.play()
+    }
+    else if (id == 4)
+    {
+        // Room ended
+        let audio = new Audio(server + "public/msg_re.mp3")
+        audio.play()
+    }
 
     // Scroll to bottom
     messages_container.scrollTop = messages_container.scrollHeight

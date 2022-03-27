@@ -3,7 +3,7 @@ const room_code_input = document.querySelector("#room-code-input")
 const join_button = document.querySelector("#join-button")
 const create_room_button = document.querySelector("#create-room-button")
 const loading_screen = document.querySelector("#loading-screen")
-const server = "http://voila-meetup.herokuapp.com"
+const server = window.location
 
 // Fetch name
 name_input.value = fetch_name()
@@ -25,7 +25,7 @@ room_code_input.onkeydown = (e) => {
     }
 }
 join_button.onclick = () => JoinRoom()
-create_room_button.onclick = () => window.open(server + "/create", "_self")
+create_room_button.onclick = () => window.open(server + "create", "_self")
 
 // Functions
 function fetch_name()
@@ -55,7 +55,7 @@ function JoinRoom()
     if (name != "")
     {
         $.ajax({
-            url: server + "/room-status?id=" + code,
+            url: server + "room-status?id=" + code,
             type: "GET",
             success: (data) => {
 
@@ -72,7 +72,7 @@ function JoinRoom()
                     }
                     else
                     {
-                        alert("This room doesn't exist. You can try making your own.")
+                        alert("This MeetUp is not actively running.")
                     }
                 }
                 else
@@ -99,7 +99,7 @@ function JoinRoom()
     }
     else
     {
-        alert("Please enter your name before joining a room.")
+        alert("Please enter your name before joining a MeetUp.")
     }
 }
 
@@ -117,5 +117,5 @@ function toggleLoading(value)
 
 function JoinRoomFinal(code, name)
 {
-    window.open(server + "/join/" + code + "?name=" + name, "_self")
+    window.open(server + "join/" + code + "?name=" + name, "_self")
 }

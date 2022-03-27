@@ -203,6 +203,7 @@ body {
 .message-received .box {
     float: left;
     width: fit-content;
+    max-width: 80%;
     padding-left: 17.5px;
     padding-right: 17.5px;
     padding-top: 12px;
@@ -238,6 +239,7 @@ body {
 .message-sent .box {
     float: right;
     width: fit-content;
+    max-width: 80%;
     padding-left: 17.5px;
     padding-right: 17.5px;
     padding-top: 12px;
@@ -262,7 +264,6 @@ body {
     display: inline-block;
     margin-bottom: 5px;
     width: 2%;
-    color: lightgray;
 }
 
 .info-message span {
