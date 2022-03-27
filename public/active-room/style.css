@@ -155,11 +155,6 @@ body {
     background-color: rgb(39, 150, 39);
 }
 
-#main-container .right .middle {
-    flex: 1;
-    background-color: white;
-}
-
 #main-container .right .bottom {
     flex: 0.07;
     background-color: rgb(238, 238, 238);
@@ -180,4 +175,97 @@ body {
 #message-input::placeholder {
     color: gray;
     font-family: sans-serif;
+}
+
+#main-container .right .top {
+    flex: 1;
+    background-color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.message-received {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.message-received::after {
+    display: block;
+    content: "";
+    height: 0;
+    clear: both;
+}
+
+.message-received .box {
+    float: left;
+    width: fit-content;
+    padding-left: 17.5px;
+    padding-right: 17.5px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: gray;
+    background-color: rgb(240, 240, 240);
+    border: none;
+    font-size: 15px;
+    border-radius: 0.35em;
+    border-top-left-radius: 0;
+    margin-top: 10px;
+}
+
+.message-received .box .sender-name {
+    color: red;
+    font-size: 13.5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.message-sent {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.message-sent::after {
+    display: block;
+    content: "";
+    height: 0;
+    clear: both;
+}
+
+.message-sent .box {
+    float: right;
+    width: fit-content;
+    padding-left: 17.5px;
+    padding-right: 17.5px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: white;
+    background-color: var(--primary);
+    border: none;
+    font-size: 15px;
+    border-radius: 0.35em;
+    border-top-right-radius: 0;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+.info-message {
+    width: 100%;
+    color: lightgray;
+    margin-top: 10px;
+}
+
+.info-message hr {
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 2%;
+    color: lightgray;
+}
+
+.info-message span {
+    margin-left: 20px;
+    margin-right: 20px;
 }

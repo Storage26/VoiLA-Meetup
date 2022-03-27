@@ -3,7 +3,7 @@ const room_code_input = document.querySelector("#room-code-input")
 const join_button = document.querySelector("#join-button")
 const create_room_button = document.querySelector("#create-room-button")
 const loading_screen = document.querySelector("#loading-screen")
-const server = "http://127.0.0.1:8000"
+const server = window.location
 
 // Fetch name
 name_input.value = fetch_name()

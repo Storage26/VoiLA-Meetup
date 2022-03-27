@@ -232,6 +232,12 @@ io.of("active_room").on("connection", socket => {
         }
     })
 
+    socket.on("end_room", () => {
+        database.ref("ActiveRooms/" + room_id).remove().then(() => {
+            io.of("active_room").to("#active_room#room" + room_id).emit("room_ended", user_name)
+        })
+    })
+
     // Disconnect Event
     socket.on("disconnect", () => {
         io.of("active_room").to("#active_room#room" + room_id).emit("user_left", user_name)

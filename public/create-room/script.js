@@ -2,7 +2,7 @@ const body = document.querySelector("body")
 const user_name = document.querySelector("#user-name")
 const create_button = document.querySelector("#create-button")
 const loading_screen = document.querySelector("#loading-screen")
-const server = "http://127.0.0.1:8000"
+const server = window.location
 
 // Listeners
 body.onload = () => {

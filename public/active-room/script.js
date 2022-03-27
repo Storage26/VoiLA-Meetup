@@ -2,10 +2,12 @@ const body = document.querySelector("body")
 const connecting_screen = document.querySelector("#connecting-screen")
 const message_input = document.querySelector("#message-input")
 const room_id_display = document.querySelector("#room-id-display")
+const messages_container = document.querySelector("#messages-container")
+const message_box_container = document.querySelector("#message-box-container")
 const end_room_button = document.querySelector("#end-room-button")
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
-const server = "http://127.0.0.1:8000"
+const server = window.location
 var socket = null
 
 // Verify username
@@ -123,7 +125,6 @@ function ConnectToServer()
                 {
                     // Sent by me
                     AddMessage(0, {
-                        sender_name: sender_name,
                         message: message
                     })
                 }
@@ -154,6 +155,104 @@ function ConnectToServer()
             other_user_name: other_user_name
         })
     })
+
+    socket.on("room_ended", other_user_name_temp => {
+        let other_user_name = other_user_name_temp.toString()
+
+        socket.off("disconnect")
+        socket.off("connect_error")
+        
+        message_input.blur()
+        message_input.disabled = true
+        message_box_container.style.visibility = "hidden"
+        end_room_button.style.visibility = "hidden"
+        AddMessage(4, {
+            other_user_name: other_user_name
+        })
+    })
+}
+
+function AddMessage(id, object)
+{
+    var toAdd = ""
+
+    if (id == 0)
+    {
+        // Sent by me
+        let message = object.message
+
+        toAdd = `
+        <div class="message-sent">
+            <div class="box">
+                <div class="message">` + message + `</div>
+            </div>
+        </div>
+        `
+    }
+    else if (id == 1)
+    {
+        // Sent by other user
+        let message = object.message
+        let sender_name = object.sender_name
+
+        toAdd = `
+        <div class="message-received">
+            <div class="box">
+                <div class="sender-name">` + sender_name + `</div>
+                <div class="message">` + message + `</div>
+            </div>
+        </div>
+        `
+    }
+    else if (id == 2)
+    {
+        // User joined
+        let other_user_name = object.other_user_name
+
+        toAdd = `
+        <div class="info-message">
+            <center>
+                <hr>
+                <span>` + other_user_name + " joined" + `</span>
+                <hr>
+            </center>
+        </div>
+        `
+    }
+    else if (id == 3)
+    {
+        // User left
+        let other_user_name = object.other_user_name
+
+        toAdd = `
+        <div class="info-message">
+            <center>
+                <hr>
+                <span>` + other_user_name + " left" + `</span>
+                <hr>
+            </center>
+        </div>
+        `
+    }
+    else if (id == 4)
+    {
+        let other_user_name = object.other_user_name
+
+        toAdd = `
+        <div class="info-message">
+            <center>
+                <hr>
+                <span style="color: red">MeetUp ended by <b>` + other_user_name + `</b></span>
+                <hr>
+            </center>
+        </div>
+        `
+    }
+
+    messages_container.innerHTML += toAdd
+
+    // Scroll to bottom
+    messages_container.scrollTop = messages_container.scrollHeight
 }
 
 function DisconnectFromServer(socket)
