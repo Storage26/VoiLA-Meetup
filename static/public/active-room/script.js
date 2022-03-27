@@ -7,7 +7,7 @@ const message_box_container = document.querySelector("#message-box-container")
 const end_room_button = document.querySelector("#end-room-button")
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
-const server = window.location
+const server = location.protocol + '//' + location.host + "/"
 var socket = null
 
 // Verify username
