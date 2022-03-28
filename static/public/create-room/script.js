@@ -5,16 +5,38 @@ const loading_screen = document.querySelector("#loading-screen")
 const server = location.protocol + '//' + location.host + "/"
 
 // Listeners
+user_name.value = fetch_name()
+
 body.onload = () => {
     user_name.focus()
 }
 create_button.onclick = () => {
     CreateRoom()
 }
+user_name.oninput = () => {
+    set_name(user_name.value.toString())
+}
 user_name.onkeypress = (e) => {
     if (e.keyCode == 13)
     {
         CreateRoom()
+    }
+}
+
+// Functions
+function set_name(text)
+{
+    localStorage.setItem("name", text)
+}
+function fetch_name()
+{
+    if (localStorage.getItem("name") != null)
+    {
+        return localStorage.getItem("name")
+    }
+    else
+    {
+        return ""
     }
 }
 

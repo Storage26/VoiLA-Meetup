@@ -156,13 +156,36 @@ body {
 }
 
 #main-container .right .bottom {
+    display: flex;
+    padding-left: 20px;
     flex: 0.07;
+    flex-direction: row;
     background-color: rgb(238, 238, 238);
 }
 
+#main-container .right .bottom i {
+    color: grey;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 9999em;
+    padding: 7.5px;
+}
+
+#main-container .right .bottom i:hover
+{
+    background-color: rgb(184, 184, 184);
+}
+
+#main-container .right .bottom i:active
+{
+    background-color: rgb(162, 162, 162);
+}
+
 #message-input {
+    margin-left: -5px;
     box-sizing: border-box;
-    width: 100%;
+    flex: 1;
     height: 100%;
     background-color: transparent;
     border: none;
