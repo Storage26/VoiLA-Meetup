@@ -422,6 +422,6 @@ function connected()
 function RequestInterval()
 {
     setInterval(() => {
-        $.get("/i")
+        $.get(server + "i")
     }, 300000)
 }

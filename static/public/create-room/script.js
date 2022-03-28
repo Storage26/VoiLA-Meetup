@@ -25,7 +25,7 @@ function CreateRoom()
     let name = user_name.value.toString().trim()
 
     $.ajax({
-        url: server + "/create-room?name=" + name,
+        url: server + "create-room?name=" + name,
         type: "GET",
         success: (data) => {
             // Hide loading
