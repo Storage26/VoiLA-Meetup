@@ -13,6 +13,7 @@ const message_room_ended_audio = document.querySelector("#message-room-ended-aud
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
 const server = location.protocol + '//' + location.host + "/"
+var room_ended = false
 var socket = null
 
 // Verify username
@@ -80,119 +81,147 @@ function ConnectToServer()
     })
 
     socket.on("connect", () => {
-        document.title = room_id + " - Connected"
-        room_id_display.innerHTML = room_id
-        ToggleConnectingScreen(false)
+        if (!room_ended)
+        {
+            document.title = room_id + " - Connected"
+            room_id_display.innerHTML = room_id
+            ToggleConnectingScreen(false)
 
-        message_input.value = ""
-        message_input.focus()
+            message_input.value = ""
+            message_input.focus()
+        }
     })
 
     socket.on("connect_error", (err) => {
-        message_input.blur()
-        message_input.value = ""
-
-        var error = err.toString().trim()
-        error = error.substring(7, error.length)
-        let error_message = "Something went wrong!"
-
-        if (isCEFS(error))
+        if (!room_ended)
         {
-            error_message = error.substring(2, error.length).trim()
-        }
+            message_input.blur()
+            message_input.value = ""
 
-        DisconnectFromServer(socket)
-        alert(error_message)
-        ConnectToServer()
+            var error = err.toString().trim()
+            error = error.substring(7, error.length)
+            let error_message = "Something went wrong!"
+
+            if (isCEFS(error))
+            {
+                error_message = error.substring(2, error.length).trim()
+            }
+
+            DisconnectFromServer(socket)
+            alert(error_message)
+            ConnectToServer()
+        }
     })
 
     socket.on("disconnect", () => {
-        message_input.blur()
-        message_input.value = ""
+        if (!room_ended)
+        {
+            message_input.blur()
+            message_input.value = ""
 
-        DisconnectFromServer(socket)
-        alert("You were disconnected from the server.")
-        ConnectToServer()
+            DisconnectFromServer(socket)
+            alert("You were disconnected from the server.")
+            ConnectToServer()
+        }
     })
 
     socket.on("receive_message", (object) => {
-        let sender_name = object.sender.name.toString()
-        let message = object.message.toString()
-        let sender_id = object.sender.id.toString()
-
-        if (connected())
+        if (!room_ended)
         {
-            let my_id = socket.id
+            let sender_name = object.sender.name.toString()
+            let message = object.message.toString()
+            let sender_id = object.sender.id.toString()
 
-            if (my_id != null)
+            if (connected())
             {
-                if (sender_id == my_id)
+                let my_id = socket.id
+
+                if (my_id != null)
                 {
-                    // Sent by me
-                    AddMessage(0, {
-                        message: message
-                    })
-                }
-                else
-                {
-                    // Sent by someone else
-                    AddMessage(1, {
-                        sender_name: sender_name,
-                        message: message
-                    })
+                    if (sender_id == my_id)
+                    {
+                        // Sent by me
+                        AddMessage(0, {
+                            message: message
+                        })
+                    }
+                    else
+                    {
+                        // Sent by someone else
+                        AddMessage(1, {
+                            sender_name: sender_name,
+                            message: message
+                        })
+                    }
                 }
             }
         }
     })
 
     socket.on("user_joined", data => {
-        let other_user_name = data.toString().trim()
+        if (!room_ended)
+        {
+            let other_user_name = data.toString().trim()
 
-        AddMessage(2, {
-            other_user_name: other_user_name
-        })
+            AddMessage(2, {
+                other_user_name: other_user_name
+            })
+        }
     })
 
     socket.on("user_left", data => {
-        let other_user_name = data.toString().trim()
+        if (!room_ended)
+        {
+            let other_user_name = data.toString().trim()
         
-        AddMessage(3, {
-            other_user_name: other_user_name
-        })
+            AddMessage(3, {
+                other_user_name: other_user_name
+            })
+        }
     })
 
     socket.on("room_ended", other_user_name_temp => {
-        let other_user_name = other_user_name_temp.toString()
+        if (!room_ended)
+        {
+            room_ended = true
+            DisconnectFromServer(socket)
+            socket = null
+            let other_user_name = other_user_name_temp.toString()
 
-        socket.off("disconnect")
-        socket.off("connect_error")
-        
-        message_input.blur()
-        message_input.disabled = true
-        message_box_container.style.visibility = "hidden"
-        end_room_button.style.visibility = "hidden"
-        AddMessage(4, {
-            other_user_name: other_user_name
-        })
+            message_input.blur()
+            message_input.disabled = true
+            message_box_container.style.visibility = "hidden"
+            end_room_button.style.visibility = "hidden"
+            AddMessage(4, {
+                other_user_name: other_user_name
+            })
+        }
     })
 }
 
 function AddMessage(id, object)
 {
-    var toAdd = ""
+    var toAdd = document.createElement("span")
 
     if (id == 0)
     {
         // Sent by me
         let message = object.message
 
-        toAdd = `
-        <div class="message-sent">
-            <div class="box">
-                <div class="message">` + message + `</div>
-            </div>
-        </div>
-        `
+        let div = document.createElement("div")
+        div.classList.add("message-sent")
+
+        let box = document.createElement("div")
+        box.classList.add("box")
+
+        let message_e = document.createElement("div")
+        message_e.classList.add("message")
+        message_e.innerText = message
+
+        box.appendChild(message_e)
+        div.appendChild(box)
+
+        toAdd = div
     }
     else if (id == 1)
     {
@@ -200,62 +229,106 @@ function AddMessage(id, object)
         let message = object.message
         let sender_name = object.sender_name
 
-        toAdd = `
-        <div class="message-received">
-            <div class="box">
-                <div class="sender-name">` + sender_name + `</div>
-                <div class="message">` + message + `</div>
-            </div>
-        </div>
-        `
+        let div = document.createElement("div")
+        div.classList.add("message-received")
+
+        let img = document.createElement("img")
+        img.src = "/public/ui.png"
+
+        let box = document.createElement("div")
+        box.classList.add("box")
+
+        let message_e = document.createElement("div")
+        message_e.classList.add("message")
+        message_e.innerText = message
+
+        let sn_e = document.createElement("div")
+        sn_e.classList.add("sender-name")
+        sn_e.innerText = sender_name
+
+        box.appendChild(sn_e)
+        box.appendChild(message_e)
+        div.appendChild(img)
+        div.appendChild(box)
+
+        toAdd = div
     }
     else if (id == 2)
     {
         // User joined
         let other_user_name = object.other_user_name
 
-        toAdd = `
-        <div class="info-message">
-            <center>
-                <hr color="lightgray">
-                <span>` + other_user_name + " joined" + `</span>
-                <hr color="lightgray">
-            </center>
-        </div>
-        `
+        let div = document.createElement("div")
+        div.classList.add("info-message")
+
+        let center = document.createElement("center")
+        let hr1 = document.createElement("hr")
+        let hr2 = document.createElement("hr")
+        
+        hr1.color = "lightgray"
+        hr2.color = "lightgray"
+
+        let span = document.createElement("span")
+        span.innerText = other_user_name + " joined"
+
+        center.appendChild(hr1)
+        center.appendChild(span)
+        center.appendChild(hr2)
+        div.appendChild(center)
+
+        toAdd = div
     }
     else if (id == 3)
     {
         // User left
         let other_user_name = object.other_user_name
 
-        toAdd = `
-        <div class="info-message">
-            <center>
-                <hr color="lightgray">
-                <span>` + other_user_name + " left" + `</span>
-                <hr color="lightgray">
-            </center>
-        </div>
-        `
+        let div = document.createElement("div")
+        div.classList.add("info-message")
+
+        let center = document.createElement("center")
+        let hr1 = document.createElement("hr")
+        let hr2 = document.createElement("hr")
+        
+        hr1.color = "lightgray"
+        hr2.color = "lightgray"
+
+        let span = document.createElement("span")
+        span.innerText = other_user_name + " left"
+
+        center.appendChild(hr1)
+        center.appendChild(span)
+        center.appendChild(hr2)
+        div.appendChild(center)
+
+        toAdd = div
     }
     else if (id == 4)
     {
         // Room ended
         let other_user_name = object.other_user_name
 
-        toAdd = `
-        <div class="info-message">
-            <center>
-                <hr>
-                <span style="color: red">MeetUp ended by <b>` + other_user_name + `</b></span>
-                <hr>
-            </center>
-        </div>
-        `
+        let div = document.createElement("div")
+        div.classList.add("info-message")
+
+        let center = document.createElement("center")
+        let hr1 = document.createElement("hr")
+        let hr2 = document.createElement("hr")
+
+        let span = document.createElement("span")
+        span.style = "color: red"
+        span.innerText = "MeetUp ended by <b>" + other_user_name + "</b>"
+
+        center.appendChild(hr1)
+        center.appendChild(span)
+        center.appendChild(hr2)
+
+        div.appendChild(center)
+
+        toAdd = div
     }
 
-    messages_container.innerHTML += toAdd
+    messages_container.appendChild(toAdd)
 
     // Make sound
     if (id == 0)
@@ -296,6 +369,11 @@ function AddMessage(id, object)
 function DisconnectFromServer(socket)
 {
     socket.removeAllListeners()
+
+    if (connected())
+    {
+        socket.disconnect()
+    }
 }
 
 function isCEFS(text)

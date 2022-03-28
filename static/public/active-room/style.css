@@ -200,6 +200,14 @@ body {
     clear: both;
 }
 
+.message-received img {
+    float: left;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 40px;
+    animation: message-received-user-icon-animation 0.25s;
+}
+
 .message-received .box {
     float: left;
     width: fit-content;
@@ -215,6 +223,7 @@ body {
     border-radius: 0.35em;
     border-top-left-radius: 0;
     margin-top: 10px;
+    animation: message-sent-animation 0.25s;
 }
 
 .message-received .box .sender-name {
@@ -222,6 +231,7 @@ body {
     font-size: 13.5px;
     margin-bottom: 5px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .message-sent {
@@ -252,6 +262,44 @@ body {
     border-top-right-radius: 0;
     margin-top: 12px;
     margin-bottom: 5px;
+    animation: message-sent-animation 0.25s;
+}
+
+@keyframes message-sent-animation {
+    from {
+        opacity: 0;
+        transform: translate(0, 20px);
+        scale: 0.85;
+    }
+    to {
+        opacity: 1;
+        transform: translate(0, 0px);
+        scale: 1;
+    }
+}
+
+@keyframes message-received-animation {
+    from {
+        opacity: 0;
+        transform: translate(0, 20px);
+        scale: 0.85;
+    }
+    to {
+        opacity: 1;
+        transform: translate(0, 0px);
+        scale: 1;
+    }
+}
+
+@keyframes message-received-user-icon-animation {
+    from {
+        opacity: 0;
+        transform: translate(0, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(0, 0px);
+    }
 }
 
 .info-message {

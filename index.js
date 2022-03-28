@@ -181,7 +181,7 @@ function RandomCode() {
 }
 
 // Socket.io Middlewares
-io.of("active-room").use((socket, next) => {
+io.of("active_room").use((socket, next) => {
     
     let user_name = socket.handshake.query.user_name
     let room_id = socket.handshake.query.room_id
@@ -202,6 +202,23 @@ io.of("active-room").use((socket, next) => {
         next(new Error("SSPlease provide your name before joining a MeetUp."))
     }
 
+})
+
+io.of("active_room").use((socket, next) => {
+    let room_id = socket.handshake.query.room_id
+
+    database.ref("ActiveRooms").get().then(snap => {
+        if (snap.hasChild(room_id))
+        {
+            next()
+        }
+        else
+        {
+            next(new Error("This MeetUp is not actively running!"))
+        }
+    }).catch(() => {
+        next(new Error("It seems our servers are currently down."))
+    })
 })
 
 // WebSocket Connections
