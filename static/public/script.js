@@ -1,8 +1,10 @@
 const name_input = document.querySelector("#name-input")
 const room_code_input = document.querySelector("#room-code-input")
 const join_button = document.querySelector("#join-button")
+const join_random_room_button = document.querySelector("#join-random-room-button")
 const create_room_button = document.querySelector("#create-room-button")
 const loading_screen = document.querySelector("#loading-screen")
+const searching_rooms_screen = document.querySelector("#searching-rooms-screen")
 const server = location.protocol + '//' + location.host + "/"
 
 // Fetch name
@@ -26,6 +28,7 @@ room_code_input.onkeydown = (e) => {
 }
 join_button.onclick = () => JoinRoom()
 create_room_button.onclick = () => window.open(server + "create", "_self")
+join_random_room_button.onclick = () => JoinRandomRoom()
 
 // Functions
 function fetch_name()
@@ -40,9 +43,71 @@ function fetch_name()
     }
 }
 
+function JoinRandomRoom()
+{
+    toggleSearching(true)
+
+    $.ajax({
+        url: server + "random-room",
+        type: "GET",
+        success: (data) => {
+
+            // Hide loading
+            toggleSearching(false)
+
+            if (data.success == true)
+            {
+                let room_id = data.roomId
+
+                let user_name = name_input.value.toString().trim()
+
+                if (user_name != "")
+                {
+                    JoinRoomFinal(room_id, user_name)
+                }
+                else
+                {
+                    JoinRoomFinal(room_id, null)
+                }
+            }
+            else
+            {
+                let error_text = data.error
+
+                if (error_text != undefined)
+                {
+                    alert(error_text)
+                }
+                else
+                {
+                    alert("Something went wrong!")
+                }
+            }
+        },
+        error: () => {
+            // Hide searching
+            toggleSearching(false)
+
+            alert("Something went wrong!")
+        }
+    })
+}
+
 function set_name(text)
 {
     localStorage.setItem("name", text)
+}
+
+function toggleSearching(value)
+{
+    if (value)
+    {
+        searching_rooms_screen.style.visibility = "visible"
+    }
+    else
+    {
+        searching_rooms_screen.style.visibility = "hidden"
+    }
 }
 
 function JoinRoom()
@@ -117,5 +182,12 @@ function toggleLoading(value)
 
 function JoinRoomFinal(code, name)
 {
-    window.open(server + "join/" + code + "?name=" + name, "_self")
+    if (name != null)
+    {
+        window.open(server + "join/" + code + "?name=" + name, "_self")
+    }
+    else
+    {
+        window.open(server + "join/" + code, "_self")
+    }
 }

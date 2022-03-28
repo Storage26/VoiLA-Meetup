@@ -33,6 +33,48 @@ app.get("/create", (req, res) => {
     res.sendFile(__dirname + "/create-room.html")
 })
 
+app.get("/random-room", (req, res) => {
+    database.ref("ActiveRooms").get().then(snap => {
+        
+        if (snap.numChildren() > 0)
+        {
+            // Rooms exist
+            let list = []
+
+            // Add to list
+            snap.forEach(snap1 => {
+                list.push(snap1.key)
+            })
+
+            let min = 0
+            let max = list.length - 1
+            let num = Math.floor(Math.random() * (max - min + 1) + min)
+
+            res.json({
+                success: true,
+                roomId: list[num]
+            })
+        }
+        else
+        {
+            res.json({
+                success: false,
+                error: "No MeetUps are running actively. But, you can make your own!"
+            })
+        }
+
+    }).catch(() => {
+        res.json({
+            success: false,
+            error: "It seems our server is currently down."
+        })
+    })
+})
+
+app.get("/i", (req, res) => {
+    res.end()
+})
+
 app.get("/join/:code", (req, res) => {
     let code = req.params.code
     let user_name = req.query.name

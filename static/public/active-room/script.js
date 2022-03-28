@@ -32,6 +32,8 @@ body.onload = () => {
     document.title = "Connecting..."
 
     ConnectToServer()
+
+    RequestInterval()
 }
 end_room_button.onclick = () => {
     let answer = confirm("Confirm you want to end this MeetUp now?")
@@ -414,4 +416,11 @@ function SendMessage(message)
 function connected()
 {
     return socket != null && socket.connected
+}
+
+function RequestInterval()
+{
+    setInterval(() => {
+        $.get("/i")
+    }, 300000)
 }
