@@ -2,7 +2,7 @@ const body = document.querySelector("body")
 const user_name = document.querySelector("#user-name")
 const create_button = document.querySelector("#create-button")
 const loading_screen = document.querySelector("#loading-screen")
-const server = "http://voila-meetup.herokuapp.com"
+const server = location.protocol + '//' + location.host + "/"
 
 // Listeners
 body.onload = () => {

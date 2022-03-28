@@ -188,6 +188,7 @@ function ConnectToServer()
             room_ended = true
             DisconnectFromServer(socket)
             socket = null
+            document.title = room_id + " - Ended"
             let other_user_name = other_user_name_temp.toString()
 
             message_input.blur()
@@ -319,7 +320,7 @@ function AddMessage(id, object)
 
         let span = document.createElement("span")
         span.style = "color: red"
-        span.innerText = "MeetUp ended by <b>" + other_user_name + "</b>"
+        span.innerHTML = "MeetUp ended by <b>" + other_user_name + "</b>"
 
         center.appendChild(hr1)
         center.appendChild(span)
