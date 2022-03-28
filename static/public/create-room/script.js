@@ -68,5 +68,5 @@ function toggleLoading(value)
 
 function JoinRoom(code, name)
 {
-    window.open(server + "/join/" + code + "?name=" + name, "_self")
+    window.open(server + "join/" + code + "?name=" + name, "_self")
 }
