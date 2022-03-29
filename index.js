@@ -133,7 +133,7 @@ app.get("/create-room", (req, res) => {
                 }
             }
 
-            database.ref("ActiveRooms/" + code).set(true).then(() => {
+            database.ref("ActiveRooms/" + code + "/Active").set(true).then(() => {
                 res.json({
                     success: true,
                     roomCode: code
@@ -167,11 +167,11 @@ app.get("/room-status", (req, res) => {
     if (given(id)) {
         id = id.toString().trim()
 
-        database.ref("ActiveRooms").get().then(snap1 => {
+        database.ref("ActiveRooms/" + id).get().then(snap1 => {
 
             res.json({
                 success: true,
-                roomActive: snap1.hasChild(id)
+                roomActive: snap1.hasChild("Active")
             })
 
         }).catch(() => {
@@ -249,8 +249,8 @@ io.of("active_room").use((socket, next) => {
 io.of("active_room").use((socket, next) => {
     let room_id = socket.handshake.query.room_id
 
-    database.ref("ActiveRooms").get().then(snap => {
-        if (snap.hasChild(room_id))
+    database.ref("ActiveRooms/" + room_id).get().then(snap => {
+        if (snap.hasChild("Active"))
         {
             next()
         }
@@ -277,6 +277,19 @@ io.of("active_room").on("connection", socket => {
 
     // Listeners
     socket.on("message", (message) => {
+        database.ref("ActiveRooms/" + room_id + "/Typing").get().then(snap => {
+            let member_id = snap.child("MemberId").val().toString()
+
+            if (member_id == socket.id)
+            {
+                database.ref("ActiveRooms/" + room_id + "/Typing").set({
+                    "MemberId": "",
+                    "MemberName": "",
+                    "Time": 0
+                })
+            }
+        })
+
         if (given(message))
         {
             message = message.toString().trim()
@@ -291,6 +304,14 @@ io.of("active_room").on("connection", socket => {
         }
     })
 
+    socket.on("typing", () => {
+        database.ref("ActiveRooms/" + room_id + "/Typing").set({
+            "MemberId": socket.id,
+            "MemberName": user_name,
+            "Time": Date.now().toString()
+        })
+    })
+
     socket.on("end_room", () => {
         database.ref("ActiveRooms/" + room_id).remove().then(() => {
             io.of("active_room").to("#active_room#room" + room_id).emit("room_ended", user_name)
@@ -299,7 +320,39 @@ io.of("active_room").on("connection", socket => {
 
     // Disconnect Event
     socket.on("disconnect", () => {
+        database.ref("ActiveRooms/" + room_id + "/Typing").get().then(snap => {
+            let member_id = snap.child("MemberId").val().toString()
+
+            if (member_id == socket.id)
+            {
+                database.ref("ActiveRooms/" + room_id + "/Typing").remove()
+            }
+        })
+
         io.of("active_room").to("#active_room#room" + room_id).emit("user_left", user_name)
+    })
+
+    // Send typing status
+    database.ref("ActiveRooms/" + room_id + "/Typing").on("value", snap => {
+        let member_id = snap.child("MemberId").val()
+        let member_name = snap.child("MemberName").val()
+        let time = snap.child("Time").val()
+
+        if (member_id != undefined && time != undefined && member_id != null && time != null && member_name != undefined && member_name != null)
+        {
+            member_id = member_id.toString()
+            member_name = member_name.toString()
+            time = parseInt(time)
+
+            if (member_id != socket.id)
+            {
+                socket.emit("typing_info", {
+                    member: member_name,
+                    member_id: member_id,
+                    time: time
+                })
+            }
+        }
     })
 
 })

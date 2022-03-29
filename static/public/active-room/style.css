@@ -201,14 +201,31 @@ body {
 }
 
 #main-container .right .top {
+    display: flex;
     flex: 1;
-    background-color: white;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#messages-container {
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 5px;
     padding-bottom: 15px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    flex: 1;
+    background-color: white;
+}
+
+#typing-container {
+    visibility: collapse;
+    flex: 0.03;
+    font-size: 12px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    color: var(--primary);
 }
 
 .message-received {

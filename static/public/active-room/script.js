@@ -6,6 +6,7 @@ const messages_container = document.querySelector("#messages-container")
 const message_box_container = document.querySelector("#message-box-container")
 const end_room_button = document.querySelector("#end-room-button")
 const message_sent_audio = document.querySelector("#message-sent-audio")
+const typing_container = document.querySelector("#typing-container")
 const message_received_audio = document.querySelector("#message-received-audio")
 const message_user_joined_audio = document.querySelector("#message-user-joined-audio")
 const message_user_left_audio = document.querySelector("#message-user-left-audio")
@@ -14,6 +15,11 @@ const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
 const server = location.protocol + '//' + location.host + "/"
 var room_ended = false
+var typing_info = {
+    member: "",
+    member_id: "",
+    time: 0
+}
 var socket = null
 
 // Verify username
@@ -55,6 +61,10 @@ message_input.onkeypress = (e) => {
 
         message_input.value = ""
     }
+    else
+    {
+        SendTyping()
+    }
 }
 
 // Functions
@@ -67,6 +77,14 @@ function ToggleConnectingScreen(value)
     else
     {
         connecting_screen.style.visibility = "hidden"
+    }
+}
+
+function SendTyping()
+{
+    if (connected())
+    {
+        socket.emit("typing")
     }
 }
 
@@ -198,6 +216,18 @@ function ConnectToServer()
             AddMessage(4, {
                 other_user_name: other_user_name
             })
+        }
+    })
+    
+    socket.on("typing_info", object => {
+        let member = object.member
+        let member_id = object.member_id
+        let time = object.time
+
+        typing_info = {
+            member: member,
+            member_id: member_id,
+            time: time
         }
     })
 }
@@ -369,6 +399,23 @@ function AddMessage(id, object)
     messages_container.scrollTop = messages_container.scrollHeight
 }
 
+function ToggleTyping(value)
+{
+    if (value)
+    {
+        typing_container.style.visibility = "visible"
+    }
+    else
+    {
+        typing_container.style.visibility = "collapse"
+    }
+}
+
+function SetTyping(value)
+{
+    typing_container.innerText = value + " is typing..."
+}
+
 function DisconnectFromServer(socket)
 {
     socket.removeAllListeners()
@@ -425,3 +472,29 @@ function RequestInterval()
         $.get(server + "i")
     }, 300000)
 }
+
+// Typing Info
+setInterval(() => {
+    let member = typing_info.member
+    let member_id = typing_info.member_id
+    let time = typing_info.time
+
+    if (member == "" || time == 0)
+    {
+        ToggleTyping(false)
+    }
+    else
+    {
+        let current_time = parseInt(Date.now().toString())
+
+        if (current_time - time < 2000)
+        {
+            SetTyping(member)
+            ToggleTyping(true)
+        }
+        else
+        {
+            ToggleTyping(false)
+        }
+    }
+}, 0)
