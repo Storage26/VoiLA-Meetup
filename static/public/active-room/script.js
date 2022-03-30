@@ -36,10 +36,7 @@ while (user_name == "" || user_name == null || user_name == undefined)
 
 // Listeners
 body.onload = () => {
-    document.title = "Connecting..."
-
     ConnectToServer()
-
     RequestInterval()
 }
 end_room_button.onclick = () => {
@@ -62,11 +59,8 @@ message_input.onkeypress = (e) => {
 
         message_input.value = ""
     }
-    else
-    {
-        SendTyping()
-    }
 }
+message_input.oninput = () => SendTyping()
 
 // Functions
 function ToggleConnectingScreen(value)
@@ -91,6 +85,7 @@ function SendTyping()
 
 function ConnectToServer()
 {
+    document.title = "Connecting..."
     ToggleConnectingScreen(true)
 
     socket = io(ws_server + "active_room", {
@@ -114,6 +109,8 @@ function ConnectToServer()
     })
 
     socket.on("connect_error", (err) => {
+        document.title = room_id + " - Disconnected"
+
         if (!room_ended)
         {
             message_input.blur()
@@ -135,6 +132,8 @@ function ConnectToServer()
     })
 
     socket.on("disconnect", () => {
+        document.title = room_id + " - Disconnected"
+
         if (!room_ended)
         {
             message_input.blur()

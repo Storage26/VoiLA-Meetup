@@ -168,18 +168,19 @@ body {
     margin-top: 10px;
     margin-bottom: 10px;
     cursor: pointer;
+    transition: 0.25s;
     border-radius: 9999em;
     padding: 7.5px;
 }
 
 #main-container .right .bottom i:hover
 {
-    background-color: rgb(184, 184, 184);
+    background-color: rgb(232, 232, 232);
 }
 
 #main-container .right .bottom i:active
 {
-    background-color: rgb(162, 162, 162);
+    background-color: rgb(202, 202, 202);
 }
 
 #message-input {
@@ -204,16 +205,18 @@ body {
     display: flex;
     flex: 1;
     flex-direction: column;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 #messages-container {
+    box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 5px;
     padding-bottom: 15px;
-    flex: 1;
+    flex: 1.9;
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: white;
 }
 

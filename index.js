@@ -278,15 +278,20 @@ io.of("active_room").on("connection", socket => {
     // Listeners
     socket.on("message", (message) => {
         database.ref("ActiveRooms/" + room_id + "/Typing").get().then(snap => {
-            let member_id = snap.child("MemberId").val().toString()
+            var member_id = snap.child("MemberId").val()
 
-            if (member_id == socket.id)
+            if (member_id != undefined && member_id != null)
             {
-                database.ref("ActiveRooms/" + room_id + "/Typing").set({
-                    "MemberId": "",
-                    "MemberName": "",
-                    "Time": 0
-                })
+                member_id = member_id.toString()
+
+                if (member_id == socket.id)
+                {
+                    database.ref("ActiveRooms/" + room_id + "/Typing").set({
+                        "MemberId": "",
+                        "MemberName": "",
+                        "Time": 0
+                    })
+                }
             }
         })
 
@@ -321,11 +326,16 @@ io.of("active_room").on("connection", socket => {
     // Disconnect Event
     socket.on("disconnect", () => {
         database.ref("ActiveRooms/" + room_id + "/Typing").get().then(snap => {
-            let member_id = snap.child("MemberId").val().toString()
+            var member_id = snap.child("MemberId").val()
 
-            if (member_id == socket.id)
+            if (member_id != undefined && member_id != null)
             {
-                database.ref("ActiveRooms/" + room_id + "/Typing").remove()
+                member_id = member_id.toString()
+
+                if (member_id == socket.id)
+                {
+                    database.ref("ActiveRooms/" + room_id + "/Typing").remove()
+                }
             }
         })
 
