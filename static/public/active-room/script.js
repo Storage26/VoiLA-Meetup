@@ -14,6 +14,7 @@ const message_room_ended_audio = document.querySelector("#message-room-ended-aud
 const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
 const server = location.protocol + '//' + location.host + "/"
+const ws_server = "ws://" + location.host + "/"
 var room_ended = false
 var typing_info = {
     member: "",
@@ -92,7 +93,7 @@ function ConnectToServer()
 {
     ToggleConnectingScreen(true)
 
-    socket = io(server + "active_room", {
+    socket = io(ws_server + "active_room", {
         reconnection: false,
         query: {
             user_name: user_name,
