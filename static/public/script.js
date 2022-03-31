@@ -1,16 +1,23 @@
 const name_input = document.querySelector("#name-input")
+const body = document.querySelector("body")
 const room_code_input = document.querySelector("#room-code-input")
 const join_button = document.querySelector("#join-button")
 const join_random_room_button = document.querySelector("#join-random-room-button")
 const create_room_button = document.querySelector("#create-room-button")
 const loading_screen = document.querySelector("#loading-screen")
+const rooms_count = document.querySelector("#rooms_count")
 const searching_rooms_screen = document.querySelector("#searching-rooms-screen")
 const server = location.protocol + '//' + location.host + "/"
+var socket = null
+const ws_server = "ws://" + location.host + "/"
 
 // Fetch name
 name_input.value = fetch_name()
 
 // Listeners
+body.onload = () => {
+    SocketConnect()
+}
 name_input.oninput = () => {
     set_name(name_input.value.toString())
 }
@@ -31,6 +38,26 @@ create_room_button.onclick = () => window.open(server + "create", "_self")
 join_random_room_button.onclick = () => JoinRandomRoom()
 
 // Functions
+function SocketConnect()
+{
+    socket = io(ws_server + "home", {
+        reconnection: false
+    })
+
+    socket.on("connect_error", () => {
+        rooms_count.innerText = "(0 active)"
+        SocketConnect()
+    })
+
+    socket.on("disconnect", () => {
+        SocketConnect()
+    })
+
+    socket.on("rooms_count", object => {
+        let count = object.toString().trim()
+        rooms_count.innerText = "(" + count + " active)"
+    })
+}
 function fetch_name()
 {
     if (localStorage.getItem("name") != null)

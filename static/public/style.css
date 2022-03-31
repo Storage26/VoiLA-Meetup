@@ -199,9 +199,15 @@ body {
     padding-left: 1.25vw;
     padding-right: 1.25vw;
     padding-top: 2vh;
-    padding-bottom: 2vh;
+    padding-bottom: 1.5vh;
     margin-top: 20px;
     cursor: pointer;
+}
+
+#join-random-room-button .sub-text {
+    font-size: 12px;
+    padding-top: 5px;
+    color: rgb(224, 255, 224);
 }
 
 #join-random-room-button:hover {

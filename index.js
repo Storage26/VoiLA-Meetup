@@ -366,3 +366,11 @@ io.of("active_room").on("connection", socket => {
     })
 
 })
+
+io.of("home").on("connection", socket => {
+    
+    database.ref("ActiveRooms").on("value", snap => {
+        socket.emit("rooms_count", snap.numChildren())
+    })
+
+})
