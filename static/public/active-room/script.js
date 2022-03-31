@@ -63,6 +63,58 @@ message_input.onkeypress = (e) => {
 message_input.oninput = () => SendTyping()
 
 // Functions
+function MakeDialog(text)
+{
+    dialog_top_index += 1
+
+    let dialog = document.createElement("div")
+    dialog.classList.add("dialog")
+
+    let canvas = document.createElement("canvas")
+    canvas.style.zIndex = dialog_top_index
+    canvas.onclick = () => {
+        dialog.remove()
+    }
+
+    let container = document.createElement("div")
+    container.classList.add("container")
+    container.style.zIndex = dialog_top_index + 1
+
+    let b = document.createElement("b")
+    b.innerText = "Information"
+
+    let br1 = document.createElement("br")
+    
+    let span = document.createElement("span")
+    span.innerText = text.toString().trim()
+
+    let br2 = document.createElement("br")
+    let br3 = document.createElement("br")
+
+    let second = document.createElement("div")
+    second.classList.add("second")
+
+    let button = document.createElement("button")
+    button.innerText = "Close"
+    button.onclick = () => {
+        dialog.remove()
+    }
+
+    // Position elements
+    second.appendChild(button)
+    container.appendChild(b)
+    container.appendChild(br1)
+    container.appendChild(span)
+    container.appendChild(br2)
+    container.appendChild(br3)
+    container.appendChild(second)
+    dialog.appendChild(canvas)
+    dialog.appendChild(container)
+
+    dialogs_container.appendChild(dialog)
+    button.focus()
+}
+
 function ToggleConnectingScreen(value)
 {
     if (value)

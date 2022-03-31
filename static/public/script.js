@@ -6,10 +6,12 @@ const join_random_room_button = document.querySelector("#join-random-room-button
 const create_room_button = document.querySelector("#create-room-button")
 const loading_screen = document.querySelector("#loading-screen")
 const rooms_count = document.querySelector("#rooms_count")
+const dialogs_container = document.querySelector("#dialogs-container")
 const searching_rooms_screen = document.querySelector("#searching-rooms-screen")
 const server = location.protocol + '//' + location.host + "/"
 var socket = null
 const ws_server = "ws://" + location.host + "/"
+var dialog_top_index = 200
 
 // Fetch name
 name_input.value = fetch_name()
@@ -58,6 +60,59 @@ function SocketConnect()
         rooms_count.innerText = "(" + count + " active)"
     })
 }
+
+function MakeDialog(text)
+{
+    dialog_top_index += 1
+
+    let dialog = document.createElement("div")
+    dialog.classList.add("dialog")
+
+    let canvas = document.createElement("canvas")
+    canvas.style.zIndex = dialog_top_index
+    canvas.onclick = () => {
+        dialog.remove()
+    }
+
+    let container = document.createElement("div")
+    container.classList.add("container")
+    container.style.zIndex = dialog_top_index + 1
+
+    let b = document.createElement("b")
+    b.innerText = "Information"
+
+    let br1 = document.createElement("br")
+    
+    let span = document.createElement("span")
+    span.innerText = text.toString().trim()
+
+    let br2 = document.createElement("br")
+    let br3 = document.createElement("br")
+
+    let second = document.createElement("div")
+    second.classList.add("second")
+
+    let button = document.createElement("button")
+    button.innerText = "Close"
+    button.onclick = () => {
+        dialog.remove()
+    }
+
+    // Position elements
+    second.appendChild(button)
+    container.appendChild(b)
+    container.appendChild(br1)
+    container.appendChild(span)
+    container.appendChild(br2)
+    container.appendChild(br3)
+    container.appendChild(second)
+    dialog.appendChild(canvas)
+    dialog.appendChild(container)
+
+    dialogs_container.appendChild(dialog)
+    button.focus()
+}
+
 function fetch_name()
 {
     if (localStorage.getItem("name") != null)
@@ -103,11 +158,11 @@ function JoinRandomRoom()
 
                 if (error_text != undefined)
                 {
-                    alert(error_text)
+                    MakeDialog(error_text)
                 }
                 else
                 {
-                    alert("Something went wrong!")
+                    MakeDialog("Something went wrong!")
                 }
             }
         },
@@ -115,7 +170,7 @@ function JoinRandomRoom()
             // Hide searching
             toggleSearching(false)
 
-            alert("Something went wrong!")
+            MakeDialog("Something went wrong!")
         }
     })
 }
@@ -164,7 +219,7 @@ function JoinRoom()
                     }
                     else
                     {
-                        alert("This MeetUp is not actively running.")
+                        MakeDialog("This MeetUp is not actively running.")
                     }
                 }
                 else
@@ -173,11 +228,11 @@ function JoinRoom()
 
                     if (error_text != undefined)
                     {
-                        alert(error_text)
+                        MakeDialog(error_text)
                     }
                     else
                     {
-                        alert("Something went wrong!")
+                        MakeDialog("Something went wrong!")
                     }
                 }
             },
@@ -185,13 +240,13 @@ function JoinRoom()
                 // Hide loading
                 toggleLoading(false)
 
-                alert("Something went wrong!")
+                MakeDialog("Something went wrong!")
             }
         })
     }
     else
     {
-        alert("Please enter your name before joining a MeetUp.")
+        MakeDialog("Please enter your name before joining a MeetUp.")
     }
 }
 
