@@ -230,6 +230,8 @@ body {
 }
 
 .dialog .container {
+    min-width: 30%;
+    max-width: 90%;
     z-index: 1001;
     position: fixed;
     left: 50%;
@@ -285,4 +287,28 @@ body {
 
 .dialog .container .second {
     text-align: right;
+}
+
+#owner-name {
+    position: fixed;
+    z-index: 50;
+    left: 10px;
+    bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: #ff5757;
+    border-radius: 0.2em;
+    padding-top: 10px;
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    transition: 0.25s;
+}
+
+#owner-name:hover
+{
+    opacity: 0.5;
 }

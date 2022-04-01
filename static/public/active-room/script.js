@@ -15,7 +15,9 @@ const room_id = document.querySelector("#room-id").innerHTML.toString().trim()
 var user_name = document.querySelector("#user-name").innerHTML.toString().trim()
 const server = location.protocol + '//' + location.host + "/"
 const ws_server = "ws://" + location.host + "/"
+const dialogs_container = document.querySelector("#dialogs-container")
 var room_ended = false
+var dialog_top_index = 200
 var typing_info = {
     member: "",
     member_id: "",
@@ -72,9 +74,6 @@ function MakeDialog(text)
 
     let canvas = document.createElement("canvas")
     canvas.style.zIndex = dialog_top_index
-    canvas.onclick = () => {
-        dialog.remove()
-    }
 
     let container = document.createElement("div")
     container.classList.add("container")
@@ -95,9 +94,10 @@ function MakeDialog(text)
     second.classList.add("second")
 
     let button = document.createElement("button")
-    button.innerText = "Close"
+    button.innerText = "Retry"
     button.onclick = () => {
         dialog.remove()
+        ConnectToServer()
     }
 
     // Position elements
@@ -178,8 +178,7 @@ function ConnectToServer()
             }
 
             DisconnectFromServer(socket)
-            alert(error_message)
-            ConnectToServer()
+            MakeDialog(error_message)
         }
     })
 
@@ -192,8 +191,7 @@ function ConnectToServer()
             message_input.value = ""
 
             DisconnectFromServer(socket)
-            alert("You were disconnected from the server.")
-            ConnectToServer()
+            MakeDialog("You were disconnected from the server.")
         }
     })
 

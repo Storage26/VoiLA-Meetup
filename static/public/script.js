@@ -7,6 +7,7 @@ const create_room_button = document.querySelector("#create-room-button")
 const loading_screen = document.querySelector("#loading-screen")
 const rooms_count = document.querySelector("#rooms_count")
 const dialogs_container = document.querySelector("#dialogs-container")
+const owner_name = document.querySelector("#owner-name")
 const searching_rooms_screen = document.querySelector("#searching-rooms-screen")
 const server = location.protocol + '//' + location.host + "/"
 var socket = null
@@ -17,6 +18,9 @@ var dialog_top_index = 200
 name_input.value = fetch_name()
 
 // Listeners
+owner_name.onclick = () => {
+    window.open("https://charmflex.vercel.app/", "_blank")
+}
 body.onload = () => {
     SocketConnect()
 }
@@ -42,12 +46,13 @@ join_random_room_button.onclick = () => JoinRandomRoom()
 // Functions
 function SocketConnect()
 {
+    rooms_count.innerText = "Waiting..."
+
     socket = io(ws_server + "home", {
         reconnection: false
     })
 
     socket.on("connect_error", () => {
-        rooms_count.innerText = "(0 active)"
         SocketConnect()
     })
 
@@ -246,6 +251,9 @@ function JoinRoom()
     }
     else
     {
+        // Hide loading
+        toggleLoading(false)
+
         MakeDialog("Please enter your name before joining a MeetUp.")
     }
 }
